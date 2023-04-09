@@ -1,4 +1,3 @@
-import os
 import sys
 from typing import Optional
 
@@ -50,22 +49,17 @@ def start_circleblock(project_root: str, log_level: Optional[str] = 'INFO'):
     :param project_root: 프로젝트 루트 디렉토리 경로 (Project root directory path)
     :param log_level: 로그 레벨 (default: 'INFO') (Log level (default: 'INFO'))
     """
+    msg_left = '[<level>{level}|</level><green>{time:YYYY-MM-DD HH:mm:ss}</green>]'
+    msg_center = '[<cyan>{name}</cyan>:<cyan>{function}</cyan>:<red>{line}</red>]'
+    msg_right = '<level>{message}</level>'
+    default_msg_fmt = f'{msg_left}{msg_center} {msg_right}'
     logger.remove()
     logger.add(
         sink=sys.stderr if log_level == 'DEBUG' else sys.stdout,
         level=log_level,
-        format='{time} - {name} - {level} - {message}'
+        format=default_msg_fmt
     )
     circleblock = CircleBlock(project_root)
-    circleblock.start_watching()
-
-
-if __name__ == '__main__':
-    """
-    프로젝트 루트 디렉토리를 설정하고, CircleBlock을 시작합니다.
-    Set the project root directory and start CircleBlock.
-    """
-    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__)))
     logger.info('CircleBlock 시작합니다. Start CircleBlock.')
     logger.info(f'프로젝트 루트 디렉토리 경로: {project_root} Project root directory path: {project_root}')
-    start_circleblock(project_root)
+    circleblock.start_watching()
