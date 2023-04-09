@@ -3,6 +3,7 @@ import importlib.machinery
 import inspect
 from typing import Tuple, List
 
+import typer
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 
 
@@ -37,18 +38,22 @@ def _get_exports(module_path: str) -> Tuple[str, list[str]]:
 
     모듈 내 내보낼 수 있는 함수 목록을 가져옴.
     """
-    module_name = os.path.basename(module_path).replace('.py', '')
-    loader = importlib.machinery.SourceFileLoader(module_name, module_path)
-    module = loader.load_module()
+    try:
+        module_name = os.path.basename(module_path).replace('.py', '')
+        loader = importlib.machinery.SourceFileLoader(module_name, module_path)
+        module = loader.load_module()
 
-    exports = [
-        attr for attr in dir(module)
-        if all([
-            not attr.startswith('_'),
-            not _is_external(module, getattr(module, attr)),
-            _is_exportable(getattr(module, attr))
-        ])
-    ]
+        exports = [
+            attr for attr in dir(module)
+            if all([
+                not attr.startswith('_'),
+                not _is_external(module, getattr(module, attr)),
+                _is_exportable(getattr(module, attr))
+            ])
+        ]
+    except Exception as e:
+        typer.echo(f'Error while importing {module_path}: {e}')
+        return '', []
     return module_name, exports
 
 
@@ -104,7 +109,8 @@ class InitFileUpdater(FileSystemEventHandler):
         sl = ['.', '_']
         return all([
             not event.is_directory,
-            not any([*[filename.startswith(i) for i in sl], not event.src_path.endswith('.py')]),
+            not any([*[filename.startswith(i) for i in sl], not filename.endswith('.py')]),
+            dirname != os.path.dirname(os.path.abspath(__file__)),
             dirname != self.project_root,
         ])
 
@@ -119,20 +125,5 @@ class InitFileUpdater(FileSystemEventHandler):
         for root, dirs, files in os.walk(self.project_root):
             for directory in dirs:
                 dir_path = os.path.join(root, directory)
-                init_path = os.path.join(dir_path, '__init__.py')
-                if not os.path.exists(init_path):
-                    open(init_path, 'a').close()
-                imports = self._collect_imports(dir_path, FileSystemEvent(''))
+                imports = self._collect_imports(dir_path, FileSystemEvent(dir_path))
                 _write_imports_to_init_file(dir_path, imports)
-
-    def on_modified(self, event: FileSystemEvent):
-        # TODO: Separate and implement
-        pass
-
-    def on_created(self, event: FileSystemEvent):
-        # TODO: Separate and implement
-        pass
-
-    def on_deleted(self, event: FileSystemEvent):
-        # TODO: Separate and implement
-        pass
