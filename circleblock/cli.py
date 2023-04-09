@@ -1,6 +1,12 @@
 import os
 import click
+
 from circleblock.circleblock import start_circleblock
+
+
+@click.group(name='ccbk')
+def cli():
+    pass
 
 
 @click.command()
@@ -16,9 +22,16 @@ from circleblock.circleblock import start_circleblock
     default='INFO',
     help='Log level (default: INFO) | 로그 레벨 (default: INFO)'
 )
-def start(project_root, log_level):
-    start_circleblock(project_root, log_level)
+@click.option(
+    '--init',
+    '-i',
+    is_flag=True,
+    default=False,
+    help='Initialize and update all __init__.py files in the project | 프로젝트 내 모든 __init__.py 파일을 초기화 및 업데이트'
+)
+def start(project_root, log_level, init):
+    start_circleblock(project_root, log_level, init)
 
 
 if __name__ == '__main__':
-    start()
+    cli()

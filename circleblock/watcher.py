@@ -21,7 +21,7 @@ class FileWatcher:
 
     def start_watching(self):
         """
-        변경 사항을 감시하기 위해 루트 디렉토리를 감시하고 __init__.py 파일을 생성/업데이트합니다.
+        변경 사항을 감시하기 위해 루트 디렉토리를 감시하고 cli.py 파일을 생성/업데이트합니다.
         """
         logger.debug('변경 사항 감시 시작...')
         logger.debug(f'프로젝트 루트: {self.project_root}')

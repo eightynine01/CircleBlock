@@ -1,10 +1,11 @@
 import os
 import importlib.machinery
 import inspect
+
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 
 
-def is_external(module, obj) -> bool:
+def _is_external(module, obj) -> bool:
     """
     Check if the object is imported from an external module.
 
@@ -20,7 +21,7 @@ def is_external(module, obj) -> bool:
     return not module_of_obj_name.startswith(package_name)
 
 
-def is_exportable(obj) -> bool:
+def _is_exportable(obj) -> bool:
     """
     Check if the object is exportable (function or class).
 
@@ -29,7 +30,7 @@ def is_exportable(obj) -> bool:
     return (inspect.isfunction(obj) or inspect.isclass(obj)) and inspect.getmodule(obj) != obj.__class__
 
 
-def get_exports(module_path: str) -> tuple[str, list[str]]:
+def _get_exports(module_path: str) -> tuple[str, list[str]]:
     """
     Get a list of exportable functions within a module.
 
@@ -43,11 +44,31 @@ def get_exports(module_path: str) -> tuple[str, list[str]]:
         attr for attr in dir(module)
         if all([
             not attr.startswith('_'),
-            not is_external(module, getattr(module, attr)),
-            is_exportable(getattr(module, attr))
+            not _is_external(module, getattr(module, attr)),
+            _is_exportable(getattr(module, attr))
         ])
     ]
     return module_name, exports
+
+
+def _get_exports_str(module_name: str, exports: list[str], imports: list) -> None:
+    if not exports:
+        return
+    exports = ',\n'.join([f'    {export} as {module_name}_{export}' for export in exports])
+    line_templates = f'from .{module_name} import (\n{exports}\n)\n'
+    imports.append(line_templates)
+
+
+def _write_imports_to_init_file(dirname, imports: list[str]) -> None:
+    """
+    Write importable functions to the cli.py file in the given directory.
+
+    주어진 디렉토리의 cli.py 파일에 가져올 함수들을 작성.
+    """
+    if not imports:
+        return
+    with open(os.path.join(dirname, '__init__.py'), 'w', encoding='UTF8') as f:
+        f.writelines(imports)
 
 
 class InitFileUpdater(FileSystemEventHandler):
@@ -57,9 +78,7 @@ class InitFileUpdater(FileSystemEventHandler):
     def dispatch(self, event: FileSystemEvent):
         dirname = os.path.dirname(event.src_path)
         imports = self._collect_imports(dirname, event)
-
-        if imports:
-            self._write_imports_to_init_file(dirname, imports)
+        _write_imports_to_init_file(dirname, imports)
 
     def _collect_imports(self, dirname: str, event: FileSystemEvent) -> list[str]:
         """
@@ -67,16 +86,12 @@ class InitFileUpdater(FileSystemEventHandler):
 
         주어진 디렉토리의 모듈에서 내보낼 수 있는 함수를 모아 반환.
         """
-        sl = ['.', '_']
         imports = []
         for filename in os.listdir(dirname):
             filepath = os.path.join(dirname, filename)
             if self._is_valid_event(event, dirname, filename):
-                module_name, exports = get_exports(filepath)
-                if exports:
-                    exports = ',\n'.join([f'    {export}' for export in exports])
-                    line_templates = f'from .{module_name} import (\n{exports}\n)\n'
-                    imports.append(line_templates)
+                module_name, exports = _get_exports(filepath)
+                _get_exports_str(module_name, exports, imports)
         return imports
 
     def _is_valid_event(self, event: FileSystemEvent, dirname: str, filename: str) -> bool:
@@ -88,21 +103,26 @@ class InitFileUpdater(FileSystemEventHandler):
         sl = ['.', '_']
         return all([
             not event.is_directory,
-            not any([
-                *[filename.startswith(i) for i in sl],
-                not event.src_path.endswith('.py')
-            ]),
+            not any([*[filename.startswith(i) for i in sl], not event.src_path.endswith('.py')]),
             dirname != self.project_root,
         ])
 
-    def _write_imports_to_init_file(self, dirname: str, imports: list[str]) -> None:
+    def _initialize_all_init_files(self):
         """
-        Write importable functions to the __init__.py file in the given directory.
+        Find all the directories and create '__init__.py' files in each directory.
+        Also write the import statements for all exportable functions in each package's `__init__.py` file.
 
-        주어진 디렉토리의 __init__.py 파일에 가져올 함수들을 작성.
+        모든 디렉토리를 찾아서 각 디렉토리에 '__init__.py' 파일을 생성합니다.
+        또한, 각 패키지의 `__init__.py` 파일에 있는 내보낼 수 있는 함수를 import 하는 코드를 작성합니다.
         """
-        with open(os.path.join(dirname, 'circleblock/__init__.py'), 'w', encoding='UTF8') as f:
-            f.writelines(imports)
+        for root, dirs, files in os.walk(self.project_root):
+            for directory in dirs:
+                dir_path = os.path.join(root, directory)
+                init_path = os.path.join(dir_path, '__init__.py')
+                if not os.path.exists(init_path):
+                    open(init_path, 'a').close()
+                imports = self._collect_imports(dir_path, FileSystemEvent(''))
+                _write_imports_to_init_file(dir_path, imports)
 
     def on_modified(self, event: FileSystemEvent):
         # TODO: Separate and implement
@@ -113,9 +133,5 @@ class InitFileUpdater(FileSystemEventHandler):
         pass
 
     def on_deleted(self, event: FileSystemEvent):
-        # TODO: Separate and implement
-        pass
-
-    def _reset_init(self):
         # TODO: Separate and implement
         pass
