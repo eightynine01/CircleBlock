@@ -12,17 +12,11 @@ from .watcher import FileWatcher
 
 class CircleBlock:
     """
-    CircleBlock은 프로젝트 루트 디렉토리 내의 파일 시스템을 감시하는 클래스입니다.
     CircleBlock is a class that monitors the file system in the project root directory.
+    CircleBlock은 프로젝트 루트 디렉토리 내의 파일 시스템을 감시하는 클래스입니다.
     """
 
     def __init__(self, project_root: str, init: bool = False):
-        """
-        CircleBlock 객체를 생성합니다.
-        Create a CircleBlock object.
-
-        :param project_root: 프로젝트 루트 디렉토리 경로 (Project root directory path)
-        """
         self.project_root = project_root
         self.updater = InitFileUpdater(project_root)
         self.watcher = FileWatcher(project_root, self.updater)
@@ -30,31 +24,24 @@ class CircleBlock:
             return
         self.updater.initialize_all_init_files()
 
-    def start_watching(self):
+    def watch_file_system(self):
         """
-        파일 시스템 감시를 시작합니다.
         Start monitoring the file system.
+        파일 시스템 감시를 시작합니다.
         """
         self.watcher.start_watching()
-        logger.info(f'{self.project_root}의 파일 시스템 감시를 시작합니다. Start monitoring the file system in {self.project_root}.')
+        logger.info(f'Start monitoring the file system in {self.project_root}. {self.project_root}의 파일 시스템 감시를 시작합니다.')
 
-    def stop_watching(self):
+    def stop_file_system_watch(self):
         """
-        파일 시스템 감시를 종료합니다.
         Stop monitoring the file system.
+        파일 시스템 감시를 종료합니다.
         """
         self.watcher.stop_watching()
-        logger.info(f'{self.project_root}의 파일 시스템 감시를 종료합니다. Stop monitoring the file system in {self.project_root}.')
+        logger.info(f'Stop monitoring the file system in {self.project_root}. {self.project_root}의 파일 시스템 감시를 종료합니다.')
 
 
-def start_circleblock(project_root: str, log_level: Optional[str] = 'INFO', init: bool = False):
-    """
-    CircleBlock을 시작합니다.
-    Start CircleBlock.
-
-    :param project_root: 프로젝트 루트 디렉토리 경로 (Project root directory path)
-    :param log_level: 로그 레벨 (default: 'INFO') (Log level (default: 'INFO'))
-    """
+def launch_circleblock(project_root: str, log_level: Optional[str] = 'INFO', init: bool = False):
     msg_left = '[<level>{level}|</level><green>{time:YYYY-MM-DD HH:mm:ss}</green>]'
     msg_center = '[<cyan>{name}</cyan>:<cyan>{function}</cyan>:<red>{line}</red>]'
     msg_right = '<level>{message}</level>'
@@ -66,9 +53,9 @@ def start_circleblock(project_root: str, log_level: Optional[str] = 'INFO', init
         format=default_msg_fmt
     )
     circleblock = CircleBlock(project_root)
-    logger.info('CircleBlock 시작합니다. Start CircleBlock.')
-    logger.info(f'프로젝트 루트 디렉토리 경로: {project_root} Project root directory path: {project_root}')
-    circleblock.start_watching()
+    logger.info('Starting CircleBlock. CircleBlock 시작합니다.')
+    logger.info(f'Project root directory path: {project_root} 프로젝트 루트 디렉토리 경로: {project_root}')
+    circleblock.watch_file_system()
 
 
 @click.group(name='ccbk')
@@ -76,7 +63,7 @@ def start_circleblock(project_root: str, log_level: Optional[str] = 'INFO', init
     '--project-root',
     '-p',
     default=os.getcwd(),
-    help='Project root directory path (default: current directory) | 프로젝트 루트 디렉토리 경로 (default: 실행위치)'
+    help='Project root directory path (default: current directory) | 프로젝트 루트 디렉토리 경로 (기본값: 현재 디렉토리)'
 )
 @click.option(
     '--log-level',
@@ -111,7 +98,7 @@ def cli(ctx, project_root, log_level, init):
 def run(cb: CircleBlock, daemon: bool = True):
     if daemon:
         def start():
-            cb.start_watching()
+            cb.watch_file_system()
 
         logger.info(f"Starting CircleBlock in daemon mode")
         daemon = Daemonize(
@@ -121,10 +108,10 @@ def run(cb: CircleBlock, daemon: bool = True):
         )
         daemon.start()
     else:
-        cb.start_watching()
+        cb.watch_file_system()
 
 
 @click.command()
 @click.pass_obj
 def stop(cb: CircleBlock):
-    cb.stop_watching()
+    cb.stop_file_system_watch()

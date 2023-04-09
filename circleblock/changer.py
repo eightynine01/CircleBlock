@@ -1,6 +1,7 @@
 import os
 import importlib.machinery
 import inspect
+from typing import Tuple, List
 
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 
@@ -30,7 +31,7 @@ def _is_exportable(obj) -> bool:
     return (inspect.isfunction(obj) or inspect.isclass(obj)) and inspect.getmodule(obj) != obj.__class__
 
 
-def _get_exports(module_path: str) -> tuple[str, list[str]]:
+def _get_exports(module_path: str) -> Tuple[str, list[str]]:
     """
     Get a list of exportable functions within a module.
 
@@ -51,7 +52,7 @@ def _get_exports(module_path: str) -> tuple[str, list[str]]:
     return module_name, exports
 
 
-def _get_exports_str(module_name: str, exports: list[str], imports: list) -> None:
+def _get_exports_str(module_name: str, exports: List[str], imports: list) -> None:
     if not exports:
         return
     exports = ',\n'.join([f'    {export} as {module_name}_{export}' for export in exports])
@@ -59,7 +60,7 @@ def _get_exports_str(module_name: str, exports: list[str], imports: list) -> Non
     imports.append(line_templates)
 
 
-def _write_imports_to_init_file(dirname, imports: list[str]) -> None:
+def _write_imports_to_init_file(dirname, imports: List[str]) -> None:
     """
     Write importable functions to the circleblock_cli.py file in the given directory.
 

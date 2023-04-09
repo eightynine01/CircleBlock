@@ -6,62 +6,99 @@
     <h1>CircleBlock</h1>
 </div>
 
-CircleBlock is a Python package that automatically updates and generates `__init__.py` files for better organization and management of your Python projects. It monitors your project's file system and updates the `__init__.py` files accordingly as you make changes. The package is designed to work with circular-themed block diagrams, but it can be used in any Python project.
+CircleBlock is a class that monitors the file system in the project root directory. This class detects changes in the file system and automatically updates the exportable functions of each module in each package's `__init__.py` file.
 
 [한국어로 읽기](./README.ko.md)
 
 ## Features
 
-- Automatic update of `__init__.py` files as you add or modify files in your project
-- Monitors the file system of the project root directory
-- Support for both English and Korean languages
-- Detailed logging for easy debugging and monitoring
-- Easy installation and integration with your Python project
+1. Start/stop file system monitoring
+2. Get a list of exportable functions within a module
+3. Initialize and update all `__init__.py` files in a directory
 
 ## Installation
 
-You can install CircleBlock using pip:
+To install CircleBlock, use the following command:
 
 ```
 pip install circleblock
 ```
 
-## Usage
+## Usage (CLI)
 
-You can start CircleBlock by running the `ccbk` command with the `start` subcommand:
+### Start monitoring
 
-```
-ccbk start
-```
-
-By default, CircleBlock will start monitoring the current working directory. You can specify a different project root directory using the `--project-root` or `-p` option:
+To start monitoring the file system, use the following command:
 
 ```
-ccbk start --project-root /path/to/your/project
+ccbk run
 ```
 
-To set the log level, use the `--log-level` or `-l` option:
+### Stop monitoring
+
+To stop monitoring the file system, use the following command:
 
 ```
-ccbk start --log-level DEBUG
+ccbk stop
 ```
 
-To initialize and update all `__init__.py` files in your project, use the `--init` or `-i` flag:
+### Initialize and update `__init__.py` files
+
+To initialize and update all `__init__.py` files in the project, use the following command:
 
 ```
-ccbk start --init
+ccbk --init
 ```
 
-For more information about the available options, run:
+## Options
+
+The options available for the `ccbk` command are as follows:
+
+- `--project-root (-p)`: Project root directory path (default: current directory)
+`--log-level (-l)`: Log level (default: INFO)
+- `--init (-i)`: Initialize and update all `__init__.py` files in the project (default: False)
+
+## _Example_
+
+Assume you have a project structure like this:
 
 ```
-ccbk --help
+my_project/
+    ├── package1/
+    │   ├── module1.py
+    │   ├── module2.py
+    │   └── __init__.py
+    └── package2/
+        ├── module3.py
+        ├── module4.py
+        └── __init__.py
 ```
 
-## Contributing
+If you run `ccbk run` in the `my_project` directory, CircleBlock will start monitoring the file system. Whenever there's a change in any of the modules, CircleBlock will automatically update the `__init__.py` files with the exportable functions.
 
-Contributions are welcome! If you have a feature request, bug report, or any other ideas to improve CircleBlock, please open an issue on the project's GitHub repository. We appreciate your feedback and support.
+For instance, if `module1.py` has the following content:
 
-## License
+```
+def func_a():
+    pass
 
-CircleBlock is released under the MIT License.
+def func_b():
+    pass
+```
+
+The `__init__.py` file in the `package1` directory will be updated with the following content:
+
+```
+from .module1 import (
+    func_a,
+    func_b,
+)
+```
+
+This way, you can easily import these functions from the package itself:
+
+```
+from package1 import func_a, func_b
+```
+
+If you want to stop the file system monitoring, simply run the `ccbk stop` command. To initialize and update all `__init__.py` files in the project without starting the file system monitoring, use the `ccbk --init` command.
