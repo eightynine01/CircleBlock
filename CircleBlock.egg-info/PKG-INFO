@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: CircleBlock
+Version: 1.0.0
+Summary: Python package for creating circle-themed block diagrams
+Author: phil
+Author-email: eightynine01@gmail.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.6
+License-File: LICENSE
