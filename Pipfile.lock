@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3982de7d6c2571d7557a4fcad4afbe2ea8c00c28d3141b4456dd20329c29dc41"
+            "sha256": "e2cc5dd718fc9abaa06292fcd4c8a8b198a755ca611513f50989c15e035fb8ee"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -113,6 +113,10 @@
             ],
             "markers": "python_full_version >= '3.7.0'",
             "version": "==3.1.0"
+        },
+        "circleblock": {
+            "path": ".",
+            "version": "==1.0.3"
         },
         "click": {
             "hashes": [

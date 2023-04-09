@@ -8,8 +8,8 @@ import typer
 from daemonize import Daemonize
 from loguru import logger
 
-from circleblock.changer import InitFileUpdater
-from circleblock.watcher import FileWatcher
+from .changer import InitFileUpdater
+from .watcher import FileWatcher
 
 app = typer.Typer()
 
@@ -75,7 +75,6 @@ def run(ctx: typer.Context) -> None:
 @app.command()
 def stop(ctx: typer.Context) -> None:
     cb: CircleBlock = ctx.obj['cb'] or CircleBlock(ctx.obj['project_root'])
-    cb.stop_file_system_watch()
 
     pid_file = os.path.join(cb.project_root, 'CircleBlock.pid')
     if os.path.exists(pid_file):

@@ -9,6 +9,7 @@ loguru = "*"
 twine = "*"
 daemonize = "*"
 typer = "*"
+circleblock = {path = "."}
 
 [dev-packages]
 

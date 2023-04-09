@@ -1,15 +1,7 @@
-import atexit
 import signal
 
 from loguru import logger
 from watchdog.observers import Observer
-
-
-def log_exit_message():
-    """
-    프로그램이 종료될 때 종료 메시지를 기록합니다.
-    """
-    logger.info('파일 감시 종료.')
 
 
 class FileWatcher:
@@ -17,7 +9,6 @@ class FileWatcher:
         self.project_root = project_root
         self.changer = changer
         self.observer = Observer()
-        atexit.register(log_exit_message)
 
     def start_watching(self):
         """
