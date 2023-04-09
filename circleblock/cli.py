@@ -1,7 +1,7 @@
 import os
 import click
 
-from circleblock.circleblock import start_circleblock
+from circleblock import start_circleblock
 
 
 @click.group(name='ccbk')
