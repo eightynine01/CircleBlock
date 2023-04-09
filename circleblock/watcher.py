@@ -1,6 +1,6 @@
 import signal
 
-from loguru import logger
+import typer
 from watchdog.observers import Observer
 
 
@@ -14,8 +14,8 @@ class FileWatcher:
         """
         변경 사항을 감시하기 위해 루트 디렉토리를 감시하고 circleblock_cli.py 파일을 생성/업데이트합니다.
         """
-        logger.debug('변경 사항 감시 시작...')
-        logger.debug(f'프로젝트 루트: {self.project_root}')
+        typer.echo(f'변경 사항 감시 시작...')
+        typer.echo(f'프로젝트 루트: {self.project_root}')
 
         self.observer.schedule(self.changer, self.project_root, recursive=True)
         self.observer.start()

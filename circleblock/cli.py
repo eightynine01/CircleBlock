@@ -1,17 +1,16 @@
 import enum
 import os
 import signal
-from typing import Optional
+import sys
 
 import typer
 
 from daemonize import Daemonize
-from loguru import logger
 
 from .changer import InitFileUpdater
 from .watcher import FileWatcher
 
-app = typer.Typer()
+app = typer.Typer(add_completion=True, help='CircleBlock CLI')
 
 
 class CircleBlock:
@@ -34,7 +33,7 @@ class CircleBlock:
         파일 시스템 감시를 시작합니다.
         """
         self.watcher.start_watching()
-        logger.info(f'Start monitoring the file system in {self.project_root}. {self.project_root}의 파일 시스템 감시를 시작합니다.')
+        typer.echo(f'Start monitoring the file system in {self.project_root}. {self.project_root}의 파일 시스템 감시를 시작합니다.')
 
     def stop_file_system_watch(self):
         """
@@ -42,7 +41,7 @@ class CircleBlock:
         파일 시스템 감시를 종료합니다.
         """
         self.watcher.stop_watching()
-        logger.info(f'Stop monitoring the file system in {self.project_root}. {self.project_root}의 파일 시스템 감시를 종료합니다.')
+        typer.echo(f'Stop monitoring the file system in {self.project_root}. {self.project_root}의 파일 시스템 감시를 종료합니다.')
 
 
 class CommandType(enum.IntEnum):
@@ -52,13 +51,17 @@ class CommandType(enum.IntEnum):
 
 
 @app.callback()
-def callback(ctx: typer.Context):
-    ctx.obj = {'project_root': os.getcwd(), 'cb': None}
+def callback(
+        ctx: typer.Context,
+        project_root: str = typer.Option(None, '-p', '--project-root', help='Project root directory path')
+):
+    ctx.obj = {'project_root': project_root or os.getcwd(), 'cb': None}
 
 
-@app.command()
+@app.command(help='Start CircleBlock in daemon mode')
 def run(ctx: typer.Context) -> None:
     cb: CircleBlock = ctx.obj['cb'] or CircleBlock(ctx.obj['project_root'])
+    typer.echo(f'project_root::{ctx.obj["project_root"]}')
 
     def start():
         cb.watch_file_system()
@@ -72,7 +75,7 @@ def run(ctx: typer.Context) -> None:
     daemon.start()
 
 
-@app.command()
+@app.command(help='Stop CircleBlock daemon')
 def stop(ctx: typer.Context) -> None:
     cb: CircleBlock = ctx.obj['cb'] or CircleBlock(ctx.obj['project_root'])
 
@@ -87,28 +90,12 @@ def stop(ctx: typer.Context) -> None:
         typer.echo('CircleBlock daemon is not running or PID file is missing.')
 
 
-@app.command()
+@app.command(help='Initialize CircleBlock')
 def init(ctx: typer.Context) -> None:
     cb: CircleBlock = ctx.obj['cb'] or CircleBlock(ctx.obj['project_root'])
     cb.updater.initialize_all_init_files()
 
 
-@app.command()
-def ccbk(
-        ctx: typer.Context,
-        command: Optional[str],
-        project_root: Optional[str] = typer.Argument(None, help='Project root directory path')
-) -> None:
-    if project_root:
-        ctx.obj['project_root'] = project_root
-    if ctx.obj['cb'] is None:
-        ctx.obj['cb'] = CircleBlock(ctx.obj['project_root'])
-    {
-        CommandType.RUN: run,
-        CommandType.STOP: stop,
-        CommandType.INIT: init
-    }[CommandType(command)](ctx)
-
-
 if __name__ == '__main__':
-    app()
+    app(prog_name='circleblock', help_option_names=['--help'])
+
