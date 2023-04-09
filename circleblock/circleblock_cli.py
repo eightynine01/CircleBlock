@@ -1,7 +1,6 @@
 import enum
 import os
 import signal
-import sys
 
 import typer
 
@@ -97,5 +96,5 @@ def init(ctx: typer.Context) -> None:
 
 
 if __name__ == '__main__':
-    app(prog_name='circleblock', help_option_names=['--help'])
+    app(help_option_names=['--help'])
 

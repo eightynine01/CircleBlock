@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='CircleBlock',
-    version='1.0.5',
+    version='1.0.6',
     description='Python package for creating circle-themed block diagrams',
     author='phil',
     author_email='eightynine01@gmail.com',
@@ -28,7 +28,7 @@ setup(
     python_requires='>=3.6',
     entry_points={
         'console_scripts': [
-            'ccbk=circleblock.cli:app'
+            'ccbk=circleblock.circleblock_cli:app'
         ]
     }
 )
