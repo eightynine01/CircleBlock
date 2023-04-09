@@ -1,0 +1,7 @@
+include README.md
+include LICENSE
+include CHANGELOG.md
+include circleblock/*
+recursive-include docs *
+recursive-exclude test *
+recursive-exclude .git *

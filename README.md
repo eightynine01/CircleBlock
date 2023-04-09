@@ -13,7 +13,7 @@ This project uses [Python watchdog](https://pypi.org/project/watchdog/) to recei
 
 2. Instantiate the `circleblock.FileWatcher` class with the path to the directory you want to monitor as an argument.
    ```python
-   from circleblock import FileWatcher
+   from circleblock.circleblock import FileWatcher
 
    watcher = FileWatcher(project_root='/path/to/project')
    ```
@@ -61,9 +61,10 @@ CircleBlock은 Python 프로젝트의 디렉토리에서 파일이 생성, 삭�
 pip install circleblock
 ```
 
-2. 프로젝트 루트 디렉토리를 지정하여 `start_circleblock()` 함수를 호출합니다. 로그 레벨은 옵션으로 지정할 수 있습니다. 
+2. 프로젝트 루트 디렉토리를 지정하여 `start_circleblock()` 함수를 호출합니다. 로그 레벨은 옵션으로 지정할 수 있습니다.
+
 ```python
-from circleblock import start_circleblock
+from circleblock.circleblock import start_circleblock
 
 project_root = '/path/to/project'
 start_circleblock(project_root, log_level='INFO')

@@ -1,6 +1,6 @@
 import os
 import click
-from circleblock import start_circleblock
+from circleblock.circleblock import start_circleblock
 
 
 @click.command()
