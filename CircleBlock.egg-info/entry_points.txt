@@ -1,2 +1,2 @@
 [console_scripts]
-ccbk = circleblock.cli:start
+ccbk = circleblock.circleblock:run

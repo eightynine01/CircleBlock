@@ -9,7 +9,7 @@ CircleBlock.egg-info/dependency_links.txt
 CircleBlock.egg-info/entry_points.txt
 CircleBlock.egg-info/requires.txt
 CircleBlock.egg-info/top_level.txt
+circleblock/__init__.py
 circleblock/changer.py
 circleblock/circleblock.py
-circleblock/cli.py
 circleblock/watcher.py

@@ -8,6 +8,7 @@ watchdog = "*"
 loguru = "*"
 twine = "*"
 click = "*"
+daemonize = "*"
 
 [dev-packages]
 
