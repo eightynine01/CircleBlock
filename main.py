@@ -1,10 +1,15 @@
+import os
+
 from loguru import logger
 
-from circleblock import FileCreator, FileChanger
+from circleblock.changer import FileChanger
+from circleblock.watcher import FileWatcher
 
 if __name__ == '__main__':
-    logger.info('Starting InitFileCreator')
-    creator = FileCreator('.')
-    creator.changer = FileChanger(creator)
-    creator.create_init_files()
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__)))
+    logger.info(f'Starting InitFileCreator')
+    logger.info(f'Project root::{project_root}')
+    creator = FileWatcher(project_root)
+    creator.changer = FileChanger(project_root)
+    # creator.create_init_files()
     creator.watch_for_changes()
