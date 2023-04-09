@@ -1,4 +1,0 @@
-watchdog
-loguru
-click
-daemonize
