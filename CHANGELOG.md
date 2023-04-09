@@ -1,15 +1,15 @@
 # Changelog
 
-## v1.0.0
+All notable changes to this project will be documented in this file.
 
-### Added or Changed
-- Added this changelog :)
-- Fixed typos in both templates
-- Back to top links
-- Added more "Built With" frameworks/libraries
-- Changed table of contents to start collapsed
-- Added checkboxes for major features on roadmap
+## [Unreleased]
 
-### Removed
+## [1.0.0] - 2023-04-09
+### Added
+- CircleBlock initial release
 
-- Some packages/libraries from acknowledgements I no longer use
+### 변경사항
+- CircleBlock 초기 릴리즈
+
+[Unreleased]: https://github.com/example/example-project/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/example/example-project/releases/tag/v1.0.0

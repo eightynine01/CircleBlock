@@ -1,247 +1,74 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
-<a name="readme-top"></a>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
+# CircleBlock
 
+CircleBlock is a Python package that detects file creation, deletion, and modification events in a project directory, and updates the `__init__.py` file in that directory accordingly. This allows users to access all functions and classes within the project by simply importing the module, such as `import circleblock`, instead of specifying individual files.
 
+This project uses [Python watchdog](https://pypi.org/project/watchdog/) to receive file system events, and [Loguru](https://github.com/Delgan/loguru) for logging.
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
-
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
-<h3 align="center">project_title</h3>
-
-  <p align="center">
-    project_description
-    <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
-    ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
-  </p>
-</div>
-
-
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
-
-
-
-<!-- ABOUT THE PROJECT -->
-## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-### Built With
-
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- GETTING STARTED -->
-## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-### Installation
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/github_username/repo_name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+1. Install the `circleblock` package.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+2. Instantiate the `circleblock.FileWatcher` class with the path to the directory you want to monitor as an argument.
+```python
+from circleblock import FileWatcher
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+watcher = FileWatcher(project_root='/path/to/project')
+```
+3. Call the `watcher.start_watching()` method to start monitoring files. This method starts an event loop, so it will enter an infinite loop. Pressing Ctrl-C will exit the program.
+```python
+watcher.start_watching()
+```
 
+## Notes
 
+- To import from this package, you need to configure the module to be importable in `__init__.py`.
+- Subdirectories of the monitored directory can also be monitored.
+- Currently, only file monitoring is supported, and directory monitoring is not supported.
 
-<!-- ROADMAP -->
-## Roadmap
+## Development Environment
+- Python 3.6 or higher
+- Tested on macOS
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTRIBUTING -->
 ## Contributing
+If you would like to contribute to this project, please refer to the CONTRIBUTING.md file on GitHub.
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- LICENSE -->
 ## License
+CircleBlock is licensed under the MIT License. See the LICENSE file for more information.
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+---
+# CircleBlock
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+CircleBlock은 Python 프로젝트의 디렉토리에서 파일이 생성, 삭제, 수정되었을 때 이벤트를 감지하여 해당 디렉토리의 `__init__.py` 파일을 업데이트합니다. 이를 통해 프로젝트의 함수 또는 클래스를 import할 때 직접 파일을 지정하는 대신 `import circleblock`와 같이 모듈만 import하면 모든 함수 및 클래스에 접근할 수 있습니다. 
 
+이 프로젝트는 [Python watchdog](https://pypi.org/project/watchdog/)를 사용하여 파일 시스템 이벤트를 수신하고, [Loguru](https://github.com/Delgan/loguru)를 사용하여 로깅하고 있습니다.
 
+## 사용 방법
 
-<!-- CONTACT -->
-## Contact
+1. `circleblock` 모듈을 설치합니다.
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+2. `circleblock.FileWatcher` 클래스를 인스턴스화합니다. 인자로는 감시할 디렉토리 경로를 전달합니다.
+```python
+from circleblock import FileWatcher
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+watcher = FileWatcher(project_root='/path/to/project')
+```
+3. `watcher.start_watching()` 메서드를 호출하여 파일 감시를 시작합니다. 이 메서드는 이벤트 루프를 시작하므로 무한루프에 빠지게 됩니다. Ctrl-C를 눌러 프로그램을 종료할 수 있습니다.
+```python
+watcher.start_watching()
+```
+## 참고사항
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+- 해당 모듈에서 import하려면 해당 모듈을 __init__.py에서 import할 수 있도록 설정해야 합니다.
+- 감시 대상 디렉토리의 하위 디렉토리에 대해서도 감시가 가능합니다.
+- 현재 파일 감시만 가능하며, 디렉토리 감시는 지원하지 않습니다.
 
+## 개발 환경
+- Python 3.6 이상
+- macOS에서 테스트됨
 
+## 기여하기
+이 프로젝트에 기여하고 싶으신 분은 GitHub의 CONTRIBUTING.md 파일을 참고해주세요.
 
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
+## 라이선스
+CircleBlock은 MIT 라이선스를 따릅니다. 자세한 내용은 LICENSE 파일을 참고해주세요.
 
-* []()
-* []()
-* []()
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/repo_name/network/members
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
-[stars-url]: https://github.com/github_username/repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
-[issues-url]: https://github.com/github_username/repo_name/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
-[product-screenshot]: images/screenshot.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
