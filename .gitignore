@@ -192,7 +192,7 @@ $RECYCLE.BIN/
 
 .pypirc
 deploy.fish
-.idea
-dist
-CircleBlock.egg-info
-build
+.idea/*
+dist/*
+CircleBlock.egg-info/*
+build/*

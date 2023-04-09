@@ -8,7 +8,6 @@ watchdog = "*"
 twine = "*"
 daemonize = "*"
 typer = "*"
-circleblock = {path = "."}
 
 [dev-packages]
 
