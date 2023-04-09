@@ -1,6 +1,7 @@
 include README.md
 include LICENSE
 include CHANGELOG.md
+include cli.py
 include circleblock/*
 recursive-include docs *
 recursive-exclude test *

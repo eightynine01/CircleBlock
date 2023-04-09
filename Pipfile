@@ -7,8 +7,8 @@ name = "pypi"
 watchdog = "*"
 loguru = "*"
 twine = "*"
-click = "*"
 daemonize = "*"
+typer = "*"
 
 [dev-packages]
 
