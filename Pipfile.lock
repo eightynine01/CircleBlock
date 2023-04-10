@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "fc07100c5f28df9563199fe3769ac6c2fa832d77856ecbc9253f529c9620823c"
+            "sha256": "53fb135ff6b4addc1ee5192cbaab1b33dd93198732512930309af4b2180aed4c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -17,10 +17,6 @@
         ]
     },
     "default": {
-        "circleblock": {
-            "editable": true,
-            "path": "."
-        },
         "click": {
             "hashes": [
                 "sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e",

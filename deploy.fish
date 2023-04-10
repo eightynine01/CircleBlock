@@ -12,4 +12,4 @@ rm -rf CircleBlock.egg-info/ build/ dist
 pipenv run python setup.py sdist bdist_wheel
 
 # PyPI에 업로드
-twine upload dist/*
+pipenv run twine upload dist/*
