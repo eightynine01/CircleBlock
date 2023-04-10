@@ -10,14 +10,14 @@
 
 CircleBlock은 프로젝트의 파일 시스템을 모니터링하여 모듈 내에서 내보낼 수 있는 함수들을 자동으로 `__init__.py` 파일에 추가하는 도구입니다. 이를 통해 패키지의 함수를 쉽게 가져올 수 있습니다.
 
-[Read in English](./README.md)
+[![English](https://img.shields.io/badge/language-English-orange.svg)](README.md) [![Korean](https://img.shields.io/badge/language-Korean-blue.svg)](README.ko.md)
 
 ## 설치
 
 CircleBlock을 설치하려면 다음 명령어를 사용하세요:
 
 ```bash
-pip install circleblock
+pipenv install circleblock
 ```
 
 ## 사용법

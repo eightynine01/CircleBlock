@@ -4,11 +4,12 @@
 </div>
 <div style="display: flex; justify-content: center;">
     <h1>CircleBlock</h1>
+
 </div>
 
 CircleBlock is a class that monitors the file system in the project root directory. This class detects changes in the file system and automatically updates the exportable functions of each module in each package's `__init__.py` file.
 
-[한국어로 읽기](./README.ko.md)
+[![English](https://img.shields.io/badge/language-English-orange.svg)](README.md) [![Korean](https://img.shields.io/badge/language-Korean-blue.svg)](README.ko.md)
 
 ## Features
 
@@ -21,7 +22,7 @@ CircleBlock is a class that monitors the file system in the project root directo
 To install CircleBlock, use the following command:
 
 ```
-pip install circleblock
+pipenv install circleblock
 ```
 
 ## Usage (CLI)

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='CircleBlock',
-    version='1.0.7',
+    version='1.0.8',
     description='Python package for creating circle-themed block diagrams',
     author='phil',
     author_email='eightynine01@gmail.com',
@@ -11,7 +11,7 @@ setup(
     install_requires=[
         'watchdog',
         'typer',
-        'daemonize'
+        'daemonocle'
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -28,7 +28,9 @@ setup(
     python_requires='>=3.6',
     entry_points={
         'console_scripts': [
-            'ccbk=circleblock.circleblock_cli:app'
+            'ccbk=circleblock_cli:cli'
         ]
     }
 )
+# pipenv install -e .
+# pipenv run ccbk
