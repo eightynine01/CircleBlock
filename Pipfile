@@ -7,7 +7,7 @@ name = "pypi"
 watchdog = "*"
 typer = "*"
 daemonocle = "*"
-circleblock = {path = "."}
+twine = "*"
 
 [dev-packages]
 twine = "*"
