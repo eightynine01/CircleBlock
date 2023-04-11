@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "53fb135ff6b4addc1ee5192cbaab1b33dd93198732512930309af4b2180aed4c"
+            "sha256": "5fdaa6bf845d945781e5348582f2b0e4e40dc5f2504ce14baf2002091d98fbd5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -17,6 +17,10 @@
         ]
     },
     "default": {
+        "circleblock": {
+            "path": ".",
+            "version": "==1.0.8"
+        },
         "click": {
             "hashes": [
                 "sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e",
@@ -266,11 +270,11 @@
         },
         "pygments": {
             "hashes": [
-                "sha256:b3ed06a9e8ac9a9aae5a6f5dbe78a8a58655d17b43b93c078f094ddc476ae297",
-                "sha256:fa7bd7bd2771287c0de303af8bfdfc731f51bd2c6a47ab69d117138893b82717"
+                "sha256:77a3299119af881904cd5ecd1ac6a66214b6e9bed1f2db16993b54adede64094",
+                "sha256:f7e36cffc4c517fbc252861b9a6e4644ca0e5abadf9a113c72d1358ad09b9500"
             ],
-            "markers": "python_version >= '3.6'",
-            "version": "==2.14.0"
+            "markers": "python_version >= '3.7'",
+            "version": "==2.15.0"
         },
         "readme-renderer": {
             "hashes": [

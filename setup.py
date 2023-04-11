@@ -28,7 +28,7 @@ setup(
     python_requires='>=3.6',
     entry_points={
         'console_scripts': [
-            'ccbk=circleblock_cli:cli'
+            'ccbk=circleblock.circleblock_cli:app'
         ]
     }
 )

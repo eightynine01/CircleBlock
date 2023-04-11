@@ -10,7 +10,7 @@ from circleblock.watcher import FileWatcher
 
 sys.path.append(os.getcwd())
 
-cli = typer.Typer(add_completion=True, help='CircleBlock CLI')
+app = typer.Typer(add_completion=True, help='CircleBlock CLI')
 
 
 class CircleBlock:
@@ -84,23 +84,23 @@ def get_work_dir() -> str:
     return typer.Option(os.getcwd(), '-w', '--work_dir', help='프로젝트 루트 디렉토리 경로')
 
 
-@cli.command(help='CircleBlock 데몬 시작')
+@app.command(help='CircleBlock 데몬 시작')
 def run(work_dir: str = get_work_dir()) -> None:
     cb = CircleBlock(work_dir)
     cb.start()
 
 
-@cli.command(help='CircleBlock 데몬 종료')
+@app.command(help='CircleBlock 데몬 종료')
 def stop(work_dir: str = get_work_dir()) -> None:
     cb = CircleBlock(work_dir)
     cb.stop()
 
 
-@cli.command(help='CircleBlock 초기화')
+@app.command(help='CircleBlock 초기화')
 def init(work_dir: str = get_work_dir()) -> None:
     CircleBlock(work_dir, _init=True)
     typer.echo(f'프로젝트 루트 디렉토리 {work_dir}에서 CircleBlock을 초기화했습니다.')
 
 
 if __name__ == '__main__':
-    cli(help_option_names=['--help'])
+    app(help_option_names=['--help'])
