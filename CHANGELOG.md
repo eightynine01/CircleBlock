@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 
 [//]: # (## [Unreleased])
+## [1.1.0] - 2023-04-11
+### CLI 수정
+- CircleBlock CLI 버그 수정
+
 ## [1.0.8] - 2023-04-10
 ### 수정
 - CircleBlock initial release

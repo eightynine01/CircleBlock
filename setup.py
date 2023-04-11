@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='CircleBlock',
-    version='1.0.8',
+    version='1.1.0',
     description='Python package for creating circle-themed block diagrams',
     author='phil',
     author_email='eightynine01@gmail.com',
